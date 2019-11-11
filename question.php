@@ -1,6 +1,12 @@
 <?php include 'database.php'; ?>
+<?php session_start(); ?>
+
 <?php
   $number = (int) $_GET['n'];
+
+  $query = "SELECT * FROM questions";
+  $result = $mysqli->query($query) or die ($mysqli->error.__LINE__);
+  $total = $result->num_rows;
 
   // get question
   $query = "SELECT * FROM questions WHERE question_number = $number";
@@ -28,7 +34,7 @@
   </header>
   <main>
     <div class="container">
-       <div class="current">Question 1 of 5</div>
+       <div class="current">Question <?php echo $question['question_number'];?> of <?php echo $total;?></div>
        <p class="question">
          <?php echo $question['text']; ?>
        </p>
@@ -39,6 +45,7 @@
            <?php endwhile; ?>
          </ul>
          <input type="submit" value="Submit" />
+         <input type="hidden" value="number" value=<?php $number;?> />
 
        </form>
 
