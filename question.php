@@ -1,3 +1,16 @@
+<?php include 'database.php'; ?>
+<?php
+  $number = (int) $_GET['n'];
+
+  // get question
+  $query = "SELECT * FROM questions WHERE question_number = $number";
+  $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
+  $question = $result->fetch_assoc();
+  // get chice
+  $query = "SELECT * FROM choices WHERE question_number = $number";
+  $choices = $mysqli->query($query) or die($mysqli->error.__LINE__);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,14 +30,13 @@
     <div class="container">
        <div class="current">Question 1 of 5</div>
        <p class="question">
-         What does PHP stand for?
+         <?php echo $question['text']; ?>
        </p>
        <form method="post" action="process.php">
          <ul class="choices">
-           <li><input name="choice" type="radio" value="1" />PHP: Hypertext Preprocessor</li>
-           <li><input name="choice" type="radio" value="2" />Private Home Page</li>
-           <li><input name="choice" type="radio" value="3" />Personal Home Page</li>
-           <li><input name="choice" type="radio" value="4" />Peronal Hypertext Preprocessor</li>
+           <?php while($rows = $choices->fetch_assoc()) :?>
+             <li><input name="choice" type="radio" value=<?php echo $rows['id']; ?> /><?php echo $rows['text']; ?></li>
+           <?php endwhile; ?>
          </ul>
          <input type="submit" value="Submit" />
 
