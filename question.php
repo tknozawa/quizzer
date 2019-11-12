@@ -2,16 +2,18 @@
 <?php session_start(); ?>
 
 <?php
-  $number = (int) $_GET['n'];
+  $number = (int)$_GET['n'];
 
+  // get questions number
   $query = "SELECT * FROM questions";
-  $result = $mysqli->query($query) or die ($mysqli->error.__LINE__);
+  $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
   $total = $result->num_rows;
 
   // get question
   $query = "SELECT * FROM questions WHERE question_number = $number";
   $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
   $question = $result->fetch_assoc();
+
   // get chice
   $query = "SELECT * FROM choices WHERE question_number = $number";
   $choices = $mysqli->query($query) or die($mysqli->error.__LINE__);
@@ -45,7 +47,7 @@
            <?php endwhile; ?>
          </ul>
          <input type="submit" value="Submit" />
-         <input type="hidden" value="number" value=<?php $number;?> />
+         <input type="hidden" name="number" value=<?php echo $number; ?> />
 
        </form>
 
